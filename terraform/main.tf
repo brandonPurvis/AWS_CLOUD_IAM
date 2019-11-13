@@ -16,7 +16,7 @@ data "aws_iam_policy_document" "contributor-assume-role-document" {
     effect = "Allow"
     actions = ["sts:AssumeRole"]
     principals {
-      identifiers = ["arn:aws:iam::AWS-account-ID:user/user-name"]
+      identifiers = ["arn:aws:iam::*:user/*"]
       type = "AWS"
     }
   }
