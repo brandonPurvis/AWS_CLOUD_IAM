@@ -32,7 +32,7 @@ resource "aws_iam_policy" "contributor-policy" {
 
 resource "aws_iam_role" "contributor-role" {
   name = "My-Contributor-Role"
-  assume_role_policy = "${data.aws_iam_policy_document.contributor-assume-role-document}"
+  assume_role_policy = "${data.aws_iam_policy_document.contributor-assume-role-document.json}"
 }
 
 
