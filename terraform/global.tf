@@ -76,3 +76,26 @@ resource "aws_iam_user_group_membership" "add-terraform-user-to-groups" {
     "${aws_iam_group.role-assumers-group.name}"
   ]
 }
+
+resource "aws_iam_access_key" "terrafrom-user-access-key" {
+  user = "${aws_iam_user.terraform-user.name}"
+  status = "Active"
+}
+
+resource "aws_secretsmanager_secret" "terraform-user-secret" {
+  name = "user-secret/${aws_iam_access_key.terrafrom-user-access-key.id}"
+  description = "IAM User Secret for ${aws_iam_user.terraform-user.name} key id ${aws_iam_access_key.terrafrom-user-access-key.id}"
+}
+
+resource "aws_secretsmanager_secret_version" "terraform-user-secret-version" {
+  secret_id = "${aws_secretsmanager_secret.terraform-user-secret.arn}"
+  secret_string = "${aws_iam_access_key.terrafrom-user-access-key.secret}"
+}
+
+// OUTPUT
+
+output "terraform-user-access" {
+  value = {
+    "id" = "${aws_iam_access_key.terrafrom-user-access-key.id}"
+  }
+}
